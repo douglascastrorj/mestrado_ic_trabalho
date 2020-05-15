@@ -51,8 +51,8 @@ for iter in range(0, 100):
 
     w = linear_regression(X_with_x0, y)
     perc = PocketPLA()
-    #perc.train(X, y, MAX_ITERATIONS=50, initial_w=w)
-
+    perc._w = w
+    
   
     #Plotando dados
     xs_c1 = []

@@ -17,7 +17,7 @@ x1 = uniform(-1,1)
 y1 = uniform(-1,1)
 func.buildFromPoints( x0, y0, x1, y1)
 
-func._print()
+# func._print()
 
 
 #Gerando pontos aleatorios com base na funcao
@@ -29,7 +29,7 @@ y = generateY(func, X)
 perc10 = Perceptron()
 perc10.train(X, y)
 
-
+print(perc10._w)
 plot(X,y, perc10, func, title='Ein N = 10')
 
 X = generatePoints(100)

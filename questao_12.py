@@ -36,6 +36,18 @@ def generateY(f, X):
             y.append(-1)
     return y
 
+
+
+def transformToAnotherSpace(X):
+    transformed = []
+    for x in X:
+        x1 = x[1]
+        x2 = x[2]
+        transformed.append([1, x1, x2, x1*x2, x1**2, x2**2])
+    return transformed
+
+    
+
 errors = []
 for iter in range(0, 1000):
 
@@ -43,21 +55,27 @@ for iter in range(0, 1000):
     #Gerando pontos aleatorios com base na funcao
     X = generatePoints(1000)
     X_with_x0 = [ [1] + x for x in X] ##adicionando bias
+    Z = transformToAnotherSpace(X_with_x0)
+
+    # print(X_with_x0[0])
     # print(X[0])
 
     y = generateY(targetFunction, X) 
     y = generateNoise( y)
 
 
-    w = linear_regression(X_with_x0, y)
+    w = linear_regression(Z, y)
     perc = PocketPLA()
-    #perc.train(X, y, MAX_ITERATIONS=50, initial_w=w)
+    perc._w = w
 
   
     #DADOS FORA DA AMOSTRA
     #Gerando pontos aleatorios com base na funcao
     X = generatePoints(1000)
     X_with_x0 = [ [1] + x for x in X] ##adicionando bias
+    Z = transformToAnotherSpace(X_with_x0)
+    
+    # print(X_with_x0[0])
     # print(X[0])
 
     y = generateY(targetFunction, X) 
@@ -66,8 +84,8 @@ for iter in range(0, 1000):
     #Calculando Erro Fora da amostra
     errorCount = 0
     for i in range(0,len(y)):
-        x = X[i]
-        if perc.classify(x) != y[i]:
+        z = Z[i]
+        if perc.classify(z, append_x0=False) != y[i]:
             errorCount += 1
     error = errorCount/len(y)
     errors.append(error)
